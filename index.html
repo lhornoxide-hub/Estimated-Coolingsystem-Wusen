@@ -238,6 +238,165 @@
   .boq-table td.note { color: #e2e8f0; font-size: 12.5px; min-width: 320px; line-height: 1.45; }
   .boq-table td.price { font-family: var(--font-mono); color: #cbd5e1; font-size: 13px; }
 
+  /* PHOTO THUMBNAILS & LIGHTBOX */
+  .boq-table th.photo-th { width: 68px; text-align: center; }
+  .boq-table td.photo-cell { text-align: center; padding: 5px 6px; vertical-align: middle; }
+  .boq-thumb-wrap {
+    width: 48px;
+    height: 48px;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .boq-thumb-wrap:hover {
+    transform: scale(1.18);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(240, 165, 0, 0.45);
+  }
+  .boq-thumb-img {
+    max-width: 42px;
+    max-height: 42px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  /* HOVER ZOOM PREVIEW POPOVER */
+  .img-hover-popover {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99998;
+    background: #ffffff;
+    border: 3.5px solid #f59e0b;
+    border-radius: 16px;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.25);
+    width: 190px;
+    height: 190px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+    transform: scale(0.88);
+    opacity: 0;
+    transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+  }
+  .img-hover-popover.visible {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+  .img-hover-popover img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    filter: contrast(1.05) brightness(1.02);
+  }
+  .img-hover-popover .hover-badge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(241, 245, 249, 0.95);
+    border: 1px solid #94a3b8;
+    color: #0f172a;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+
+  .img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 15, 29, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.15s ease;
+  }
+  .img-lightbox-overlay.active {
+    display: flex;
+  }
+  .img-lightbox-card {
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+  }
+  .img-lightbox-card .img-preview-box {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    min-height: 220px;
+    max-height: 320px;
+  }
+  .img-lightbox-card .img-preview-box img {
+    max-width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    filter: contrast(1.05) brightness(1.02);
+  }
+  .img-lightbox-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  .img-lightbox-spec {
+    font-size: 12px;
+    color: #38bdf8;
+    font-family: var(--font-mono);
+    margin-bottom: 8px;
+  }
+  .img-lightbox-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .img-lightbox-close:hover {
+    background: #ef4444;
+  }
+
   /* TOTAL ROW */
   .total-row td {
     background: #0f172a;
@@ -579,6 +738,7 @@
           <thead>
             <tr>
               <th style="width:40px;text-align:center;">No.</th>
+              <th class="photo-th">รูปภาพ<span class="sub-label">Photo</span></th>
               <th style="min-width:170px;width:15%;">Product Name</th>
               <th style="min-width:150px;max-width:200px;width:14%;">Spec</th>
               <th style="width:50px;text-align:center;">Unit</th>
@@ -685,6 +845,22 @@
       </div>
     </div>
   </div>
+<!-- HOVER ZOOM FLOATING CARD -->
+<div id="img-hover-popover" class="img-hover-popover">
+  <img id="img-hover-popover-pic" src="" alt="Zoom Preview">
+  <div class="hover-badge">คลิกหรือชี้เพื่อซูมรูปภาพ</div>
+</div>
+
+<!-- PHOTO PREVIEW LIGHTBOX MODAL -->
+<div id="img-lightbox" class="img-lightbox-overlay" onclick="closeImgLightbox()">
+  <div class="img-lightbox-card" onclick="event.stopPropagation()">
+    <button class="img-lightbox-close" onclick="closeImgLightbox()">&times;</button>
+    <div class="img-preview-box">
+      <img id="img-lightbox-pic" src="" alt="Product Photo">
+    </div>
+    <div id="img-lightbox-title" class="img-lightbox-title">Product Name</div>
+    <div id="img-lightbox-spec" class="img-lightbox-spec">Specification</div>
+  </div>
 </div>
 
 <script>
@@ -784,6 +960,124 @@ function onPadTypeChange() {
   }
 
   recalculate();
+}
+
+// =============================================
+// PRODUCT IMAGES DATABASE (Direct Assets from Excel)
+// =============================================
+const ITEM_IMAGE_MAP = {
+  'pad_paper_black': './assets/pad_paper.png',
+  'pad_paper_brown': './assets/pad_paper_brown.png',
+  'pad_pp': './assets/pad_pp.png',
+  'deflector': './assets/top_cover.jpeg',
+  'deflector_coupling': './assets/top_deflector.png',
+  'pad_guide': './assets/pad_guide.jpeg',
+  'pad_guide_coupler': './assets/pad_guide_coupler.png',
+  'top_bracket': './assets/top_bracket.png',
+  'endcover_deflector': './assets/top_end_plate.png',
+  'pipe_top': './assets/distrib_pipe.png',
+  'tee_top': './assets/tee_63.png',
+  'pad_cover_side': './assets/pad_cover_side.jpeg',
+  'fixing_frame': './assets/fixing_frame.png',
+  'watergutter': './assets/gutter.png',
+  'gutter_coupling': './assets/gutter_joint.png',
+  'pad_support': './assets/pad_support.png',
+  'gutter_bracket': './assets/gutter_bracket.png',
+  'gutter_endcover': './assets/gutter_end.png',
+  'tank_conn_gutter': './assets/drain_outlet.png',
+  'thread_plug': './assets/pipe_cap.png',
+  'water_refill_eq': './assets/water_refill.png',
+  'refill_ball_valve': './assets/float_valve.png',
+  'float_gutter_bracket': './assets/float_bracket.png',
+  'tank_conn_pump': './assets/tank_connector.png',
+  'inner_wire_joint': './assets/inner_wire_joint_63.png',
+  'bend_90': './assets/elbow_63.png',
+  'connector_63': './assets/direct_63.png',
+  'ball_valve_63': './assets/ball_valve_63.png',
+  'ball_valve_32': './assets/ball_valve_32.png',
+  'double_union_63': './assets/double_union_63.png',
+  'pipe_pump': './assets/pipe_pump.png',
+  'reducing_tee': './assets/reducing_tee.png',
+  'pipe_32': './assets/pipe_32.png',
+  'filter_63': './assets/filter_63.jpeg',
+  'inner_wire_joint_pump': './assets/inner_wire_joint_pump.png',
+  'check_valve_63': './assets/check_valve_63.png',
+  'pressure_gauge': './assets/pressure_gauge.jpeg',
+  'inner_wire_bend_32': './assets/inner_wire_bend_32.png',
+  'ss_conversion_head': './assets/ss_conversion_head.jpeg',
+  'foot_valve': './assets/foot_valve.png',
+  'pump_11': './assets/pump_11.png',
+  'pump_15': './assets/pump_15.png',
+  'pump_22': './assets/pump_22.png',
+  'sealant': './assets/sealant.png',
+  'exp_bolt': './assets/exp_bolt.png',
+  'screw': './assets/screw.png'
+};
+
+function getItemImg(item, padType, padCoating) {
+  if (item.no === 1) {
+    if (padType === 'pp') return ITEM_IMAGE_MAP['pad_pp'];
+    if (padCoating === 'black') return ITEM_IMAGE_MAP['pad_paper_black'];
+    return ITEM_IMAGE_MAP['pad_paper_brown'];
+  }
+  return ITEM_IMAGE_MAP[item.id] || '';
+}
+
+function openItemLightbox(index) {
+  const item = currentBOQ[index];
+  if (!item) return;
+  const padType = document.getElementById('param-padtype') ? document.getElementById('param-padtype').value : 'paper';
+  const padCoating = document.getElementById('param-padcoating') ? document.getElementById('param-padcoating').value : 'black';
+  const imgSrc = getItemImg(item, padType, padCoating);
+  openImgLightbox(imgSrc, item.name, item.spec);
+}
+
+function openImgLightbox(imgSrc, title, spec) {
+  const modal = document.getElementById('img-lightbox');
+  const pic = document.getElementById('img-lightbox-pic');
+  const t = document.getElementById('img-lightbox-title');
+  const s = document.getElementById('img-lightbox-spec');
+  if (modal && pic && t && s) {
+    pic.src = imgSrc;
+    t.textContent = title;
+    s.textContent = spec;
+    modal.classList.add('active');
+  }
+}
+
+function closeImgLightbox() {
+  const modal = document.getElementById('img-lightbox');
+  if (modal) modal.classList.remove('active');
+}
+
+function onThumbHover(e, imgSrc) {
+  const pop = document.getElementById('img-hover-popover');
+  const pic = document.getElementById('img-hover-popover-pic');
+  if (!pop || !pic || !imgSrc) return;
+  pic.src = imgSrc;
+  
+  const rect = e.currentTarget.getBoundingClientRect();
+  const popW = 180;
+  const popH = 180;
+  
+  // Position right over the thumbnail centered
+  let top = rect.top + (rect.height / 2) - (popH / 2);
+  let left = rect.left + (rect.width / 2) - (popW / 2);
+  
+  // Keep within screen bounds
+  if (top < 10) top = 10;
+  if (top + popH > window.innerHeight - 10) top = window.innerHeight - popH - 10;
+  if (left < 10) left = 10;
+  if (left + popW > window.innerWidth - 10) left = window.innerWidth - popW - 10;
+  
+  pop.style.top = top + 'px';
+  pop.style.left = left + 'px';
+  pop.classList.add('visible');
+}
+
+function onThumbLeave() {
+  const pop = document.getElementById('img-hover-popover');
+  if (pop) pop.classList.remove('visible');
 }
 
 // =============================================
@@ -1314,12 +1608,14 @@ function recalculate() {
 function renderTable(inclSpare) {
   const tbody = document.getElementById('boq-tbody');
   const tfoot = document.getElementById('boq-tfoot');
+  const padType = document.getElementById('param-padtype') ? document.getElementById('param-padtype').value : 'paper';
+  const padCoating = document.getElementById('param-padcoating') ? document.getElementById('param-padcoating').value : 'black';
   tbody.innerHTML = '';
 
   let grandTotal = 0;
   let currentGroup = '';
 
-  currentBOQ.forEach(item => {
+  currentBOQ.forEach((item, idx) => {
     let group = '';
     if (item.no === 1) group = '🧊 1. แผงทำความเย็น (Cooling Pad Module)';
     else if (item.no >= 2 && item.no <= 11) group = '🚿 2. ระบบกระจายน้ำด้านบนและโครงสร้าง (Top System & Structure)';
@@ -1330,7 +1626,7 @@ function renderTable(inclSpare) {
     if (group !== currentGroup && group !== '') {
       currentGroup = group;
       const groupRow = document.createElement('tr');
-      groupRow.innerHTML = `<td colspan="13" style="background:rgba(56, 189, 248, 0.1); color:#38bdf8; font-weight:bold; text-align:left; padding:10px 16px; border:1px solid var(--border); font-size:12.5px; border-left:3px solid #38bdf8; letter-spacing:0.5px;">${currentGroup}</td>`;
+      groupRow.innerHTML = `<td colspan="14" style="background:rgba(56, 189, 248, 0.1); color:#38bdf8; font-weight:bold; text-align:left; padding:10px 16px; border:1px solid var(--border); font-size:12.5px; border-left:3px solid #38bdf8; letter-spacing:0.5px;">${currentGroup}</td>`;
       tbody.appendChild(groupRow);
     }
     const tr = document.createElement('tr');
@@ -1343,8 +1639,19 @@ function renderTable(inclSpare) {
     const totalClass = item.total === 0 ? 'zero-qty' : 'total-val';
     const amtClass   = item.amount === 0 ? 'zero-qty' : 'amount';
 
+    const imgSrc = getItemImg(item, padType, padCoating);
+
     tr.innerHTML = `
       <td class="no">${item.no}</td>
+      <td class="photo-cell">
+        <div class="boq-thumb-wrap" 
+             onmouseenter="onThumbHover(event, '${imgSrc}')" 
+             onmouseleave="onThumbLeave()" 
+             onclick="openItemLightbox(${idx})" 
+             title="คลิกเพื่อดูภาพขนาดใหญ่">
+          <img class="boq-thumb-img" src="${imgSrc}" alt="${item.name}" loading="lazy" onerror="this.parentElement.style.opacity='0.4'">
+        </div>
+      </td>
       <td class="product">${item.name}</td>
       <td class="spec">${item.spec}</td>
       <td>${item.unit}</td>
@@ -1364,7 +1671,7 @@ function renderTable(inclSpare) {
 
   tfoot.innerHTML = `
     <tr class="total-row">
-      <td colspan="11" style="text-align:right;font-size:13px;color:var(--text-dim)">TOTAL PRICE (USD)</td>
+      <td colspan="12" style="text-align:right;font-size:13px;color:var(--text-dim)">TOTAL PRICE (USD)</td>
       <td class="num amount" style="font-size:16px;color:var(--accent);">$${grandTotal.toFixed(2)}</td>
       <td></td>
     </tr>
